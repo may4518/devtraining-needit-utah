@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic">
+    <sys_cb_topic action="DELETE">
+        <applicability>(function execute() {
+    var gr = new GlideRecord('incident');
+    return gr.canCreate();
+})()
+</applicability>
+        <applicability_mode>script</applicability_mode>
+        <autopilot_topic>false</autopilot_topic>
+        <category>3efd22da0b214300a1b16d2367673b32</category>
+        <channels/>
+        <connect_queue/>
+        <context_profiles/>
+        <description>ITSM conversation for creating incidents using Record Producer</description>
+        <dialog_acts_enabled>false</dialog_acts_enabled>
+        <expose_on_palette>false</expose_on_palette>
+        <flexible_conversation_switching>false</flexible_conversation_switching>
+        <foundational>false</foundational>
+        <graph>{
+  "graph_api_version": "1.0.68",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "e730aa58c9e84c08bac284ae5f6febab": {
+          "id": "e730aa58c9e84c08bac284ae5f6febab",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "90e4295d701f4e38ba4cf7a3318debe6": {
+          "id": "90e4295d701f4e38ba4cf7a3318debe6",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "52a73bbde1bc4e1faa122fa7a02bb864": {
+          "id": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "stepType": "ReusableTopic",
+          "name": "Request Catalog Item",
+          "fields": [],
+          "reusableTopicChoice": "Request Catalog Item",
+          "reusableTopicId": "a39acd71c3a3330012d1758a7ff57eb6",
+          "inputs": {
+            "catalog_item_id": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "9531047253230010fa75ddeeff7b1262"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            },
+            "execute_contextual_search": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "true"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            },
+            "confirm_catalog_item": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "false"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            }
+          },
+          "outputs": [
+            {
+              "id": "4601a765da7747728f972e8e916ea486",
+              "value": "record_id",
+              "mapping": "record_id",
+              "preventDisable": true
+            },
+            {
+              "id": "9069d215964e47569d1eaa8159e00bb3",
+              "value": "record_table",
+              "mapping": "record_table",
+              "preventDisable": true
+            },
+            {
+              "id": "5d245cdc02684cebb0f28a4629bb5255",
+              "value": "variables",
+              "mapping": "variables",
+              "preventDisable": false
+            }
+          ],
+          "variableIds": [
+            "4601a765da7747728f972e8e916ea486",
+            "9069d215964e47569d1eaa8159e00bb3",
+            "5d245cdc02684cebb0f28a4629bb5255"
+          ],
+          "outdatedNote": false,
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "useTemplateTopic": false
+        },
+        "66c3f49a19e34bcd87657348be49ccac": {
+          "id": "66c3f49a19e34bcd87657348be49ccac",
+          "stepType": "Decision",
+          "name": "Decision"
+        },
+        "9c13497d9dd449668a7ff62ae3f07a98": {
+          "id": "9c13497d9dd449668a7ff62ae3f07a98",
+          "stepType": "TextOutput",
+          "name": "Request Complete Message",
+          "value": [
+            {
+              "value": "(function execute() {\n    return gs.getMessage('Your request has been submitted. Here are the details:');\n})()\n",
+              "mode": "script"
+            }
+          ],
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "secure": false,
+          "requestFeedback": true
+        },
+        "2d479be649bb4dfba15fcd85d7230403": {
+          "id": "2d479be649bb4dfba15fcd85d7230403",
+          "stepType": "LinkOutput",
+          "name": "Inserted Record Link",
+          "url": {
+            "value": "(function execute() {\n    var tableName = vaInputs.record_table.getValue();\n    var recordId = vaInputs.record_id.getValue();\n    return vaVars.baseUri + vaVars.portalName + \"?id=form&amp;table=\" + tableName + \"&amp;sys_id=\" + recordId;\n})()\n",
+            "mode": "script"
+          },
+          "label": {
+            "value": "(function execute() {\n    var message = '';\n    var gr = new GlideRecord(vaInputs.record_table.getValue());\n    if (gr.get(vaInputs.record_id.getValue()))\n        message = gs.getMessage('View submitted request ({0})', gr.getDisplayValue(gr.getDisplayName()));\n\n    return message;\n})()\n",
+            "mode": "script"
+          },
+          "header": {
+            "value": "(function execute() {\n    return '';\n})()\n",
+            "mode": "script"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "linkType": "single",
+          "introMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "listOfLinks": ""
+        }
+      },
+      "edges": [
+        {
+          "id": "89c9d95baccb4a9f8a7002d154aff0e9",
+          "edgeType": "Edge",
+          "source": "e730aa58c9e84c08bac284ae5f6febab",
+          "target": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "50c2df893e274346a7a273ed133d5673",
+          "edgeType": "Edge",
+          "source": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "target": "66c3f49a19e34bcd87657348be49ccac",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "09d2088c7a7547c497410b4b62cf74d5",
+          "edgeType": "Branch",
+          "source": "66c3f49a19e34bcd87657348be49ccac",
+          "target": "90e4295d701f4e38ba4cf7a3318debe6",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "record_idEMPTYSTRING",
+            "mode": "query"
+          },
+          "label": "Catalog Request Not Complete"
+        },
+        {
+          "id": "cc75f0d8626145ebb1c07981355a8c26",
+          "edgeType": "Branch",
+          "source": "66c3f49a19e34bcd87657348be49ccac",
+          "target": "9c13497d9dd449668a7ff62ae3f07a98",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "mode": "script",
+            "value": "(function execute() {\n    return !!vaInputs.record_id.getValue() &amp;&amp; vaInputs.record_id.getValue() != '-1';\n})()\n"
+          },
+          "label": "Catalog Request Complete"
+        },
+        {
+          "id": "cf537c48ba6844228ea5dc439f3f9b02",
+          "edgeType": "Edge",
+          "source": "9c13497d9dd449668a7ff62ae3f07a98",
+          "target": "2d479be649bb4dfba15fcd85d7230403",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "127788f418094a098f98d4213d8aa7b4",
+          "edgeType": "Edge",
+          "source": "2d479be649bb4dfba15fcd85d7230403",
+          "target": "90e4295d701f4e38ba4cf7a3318debe6",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {
+    "ade742d9d32d4f709235ed62dec2a562": {
+      "id": "ade742d9d32d4f709235ed62dec2a562",
+      "name": "LiveAgent_application",
+      "value": {
+        "mode": "simple",
+        "value": ""
+      },
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "ec918b92398f4e91bac85f6e5e34d13d": {
+      "category": "vaInputs",
+      "id": "ec918b92398f4e91bac85f6e5e34d13d",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "bd29bbe9e2e14f28a5ae1f0aa014d6f2": {
+      "id": "bd29bbe9e2e14f28a5ae1f0aa014d6f2",
+      "value": {
+        "mode": "script",
+        "value": "(function execute() {\n    return gs.getProperty('glide.servlet.uri');\n})()"
+      },
+      "name": "baseUri",
+      "label": "baseUri",
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "a7ea8d00bd8348399ede9d0593fe285b": {
+      "id": "a7ea8d00bd8348399ede9d0593fe285b",
+      "value": {
+        "mode": "script",
+        "value": "(function execute() {\n    if (vaContext.deviceType == 'ios' || vaContext.deviceType == 'android')\n        return 'mesp';\n\n    return gs.getProperty('sn_itsm_va_lite.com.snc.itsm.virtualagent.portal_url','sp');\n})()"
+      },
+      "name": "portalName",
+      "label": "portalName",
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "4601a765da7747728f972e8e916ea486": {
+      "id": "4601a765da7747728f972e8e916ea486",
+      "name": "record_id",
+      "label": "Record_id",
+      "defaultValue": "record_id",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    },
+    "9069d215964e47569d1eaa8159e00bb3": {
+      "id": "9069d215964e47569d1eaa8159e00bb3",
+      "name": "record_table",
+      "label": "Record_table",
+      "defaultValue": "record_table",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    },
+    "5d245cdc02684cebb0f28a4629bb5255": {
+      "id": "5d245cdc02684cebb0f28a4629bb5255",
+      "name": "variables",
+      "label": "Variables",
+      "defaultValue": "variables",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    }
+  }
+}</graph>
+        <key_phrases>Report IT Issue (testing),Report an Issue,report IT Issue, create,open,incident,ticket,issue,broken,help,IT</key_phrases>
+        <library>false</library>
+        <live_agent>false</live_agent>
+        <model_type>nlu_keyword</model_type>
+        <modify_confirmation_enabled>false</modify_confirmation_enabled>
+        <name>Report IT Issue (testing)</name>
+        <nlu_intent/>
+        <nlu_intent_label/>
+        <nlu_model/>
+        <nlu_model_label/>
+        <nlu_provider/>
+        <palette_label/>
+        <roles/>
+        <root_topic_id>35ca4c9d53330010fa75ddeeff7b12d1</root_topic_id>
+        <secure_custom_input_control>false</secure_custom_input_control>
+        <source_topic_id>35ca4c9d53330010fa75ddeeff7b12d1</source_topic_id>
+        <sys_class_name>sys_cb_topic</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:40:19</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>5c01452a83b2de10d704cfc0deaad37c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Report IT Issue (testing)</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sys_cb_topic_5c01452a83b2de10d704cfc0deaad37c</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:40:31</sys_updated_on>
+        <title>Report IT Issue (testing)</title>
+        <triggerable_by_notification>false</triggerable_by_notification>
+        <type>STANDARD</type>
+    </sys_cb_topic>
+    <sys_translated_text action="DELETE" query="documentkey=5c01452a83b2de10d704cfc0deaad37c"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</application>
+        <file_path/>
+        <instance_id>28458ef21b2eb99052a243f4bd4bcb0d</instance_id>
+        <instance_name>dev218542</instance_name>
+        <name>sys_cb_topic_5c01452a83b2de10d704cfc0deaad37c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic"><sys_cb_topic action="INSERT_OR_UPDATE"><applicability>(function execute() {
+    var gr = new GlideRecord('incident');
+    return gr.canCreate();
+})()
+</applicability><applicability_mode>script</applicability_mode><autopilot_topic>false</autopilot_topic><category>3efd22da0b214300a1b16d2367673b32</category><channels/><connect_queue/><context_profiles/><description>ITSM conversation for creating incidents using Record Producer</description><dialog_acts_enabled>false</dialog_acts_enabled><expose_on_palette>false</expose_on_palette><flexible_conversation_switching>false</flexible_conversation_switching><foundational>false</foundational><graph>{
+  "graph_api_version": "1.0.68",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "e730aa58c9e84c08bac284ae5f6febab": {
+          "id": "e730aa58c9e84c08bac284ae5f6febab",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "90e4295d701f4e38ba4cf7a3318debe6": {
+          "id": "90e4295d701f4e38ba4cf7a3318debe6",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "52a73bbde1bc4e1faa122fa7a02bb864": {
+          "id": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "stepType": "ReusableTopic",
+          "name": "Request Catalog Item",
+          "fields": [],
+          "reusableTopicChoice": "Request Catalog Item",
+          "reusableTopicId": "a39acd71c3a3330012d1758a7ff57eb6",
+          "inputs": {
+            "catalog_item_id": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "9531047253230010fa75ddeeff7b1262"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            },
+            "execute_contextual_search": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "true"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            },
+            "confirm_catalog_item": {
+              "value": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    },
+                    {
+                      "text": "false"
+                    },
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "mode": "simple",
+              "type": "String"
+            }
+          },
+          "outputs": [
+            {
+              "id": "4601a765da7747728f972e8e916ea486",
+              "value": "record_id",
+              "mapping": "record_id",
+              "preventDisable": true
+            },
+            {
+              "id": "9069d215964e47569d1eaa8159e00bb3",
+              "value": "record_table",
+              "mapping": "record_table",
+              "preventDisable": true
+            },
+            {
+              "id": "5d245cdc02684cebb0f28a4629bb5255",
+              "value": "variables",
+              "mapping": "variables",
+              "preventDisable": false
+            }
+          ],
+          "variableIds": [
+            "4601a765da7747728f972e8e916ea486",
+            "9069d215964e47569d1eaa8159e00bb3",
+            "5d245cdc02684cebb0f28a4629bb5255"
+          ],
+          "outdatedNote": false,
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "useTemplateTopic": false
+        },
+        "66c3f49a19e34bcd87657348be49ccac": {
+          "id": "66c3f49a19e34bcd87657348be49ccac",
+          "stepType": "Decision",
+          "name": "Decision"
+        },
+        "9c13497d9dd449668a7ff62ae3f07a98": {
+          "id": "9c13497d9dd449668a7ff62ae3f07a98",
+          "stepType": "TextOutput",
+          "name": "Request Complete Message",
+          "value": [
+            {
+              "value": "(function execute() {\n    return gs.getMessage('Your request has been submitted. Here are the details:');\n})()\n",
+              "mode": "script"
+            }
+          ],
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "secure": false,
+          "requestFeedback": true
+        },
+        "2d479be649bb4dfba15fcd85d7230403": {
+          "id": "2d479be649bb4dfba15fcd85d7230403",
+          "stepType": "LinkOutput",
+          "name": "Inserted Record Link",
+          "url": {
+            "value": "(function execute() {\n    var tableName = vaInputs.record_table.getValue();\n    var recordId = vaInputs.record_id.getValue();\n    return vaVars.baseUri + vaVars.portalName + \"?id=form&amp;table=\" + tableName + \"&amp;sys_id=\" + recordId;\n})()\n",
+            "mode": "script"
+          },
+          "label": {
+            "value": "(function execute() {\n    var message = '';\n    var gr = new GlideRecord(vaInputs.record_table.getValue());\n    if (gr.get(vaInputs.record_id.getValue()))\n        message = gs.getMessage('View submitted request ({0})', gr.getDisplayValue(gr.getDisplayName()));\n\n    return message;\n})()\n",
+            "mode": "script"
+          },
+          "header": {
+            "value": "(function execute() {\n    return '';\n})()\n",
+            "mode": "script"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "linkType": "single",
+          "introMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "listOfLinks": ""
+        }
+      },
+      "edges": [
+        {
+          "id": "89c9d95baccb4a9f8a7002d154aff0e9",
+          "edgeType": "Edge",
+          "source": "e730aa58c9e84c08bac284ae5f6febab",
+          "target": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "50c2df893e274346a7a273ed133d5673",
+          "edgeType": "Edge",
+          "source": "52a73bbde1bc4e1faa122fa7a02bb864",
+          "target": "66c3f49a19e34bcd87657348be49ccac",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "09d2088c7a7547c497410b4b62cf74d5",
+          "edgeType": "Branch",
+          "source": "66c3f49a19e34bcd87657348be49ccac",
+          "target": "90e4295d701f4e38ba4cf7a3318debe6",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "value": "record_idEMPTYSTRING",
+            "mode": "query"
+          },
+          "label": "Catalog Request Not Complete"
+        },
+        {
+          "id": "cc75f0d8626145ebb1c07981355a8c26",
+          "edgeType": "Branch",
+          "source": "66c3f49a19e34bcd87657348be49ccac",
+          "target": "9c13497d9dd449668a7ff62ae3f07a98",
+          "sourcePort": "",
+          "targetPort": "",
+          "expression": {
+            "mode": "script",
+            "value": "(function execute() {\n    return !!vaInputs.record_id.getValue() &amp;&amp; vaInputs.record_id.getValue() != '-1';\n})()\n"
+          },
+          "label": "Catalog Request Complete"
+        },
+        {
+          "id": "cf537c48ba6844228ea5dc439f3f9b02",
+          "edgeType": "Edge",
+          "source": "9c13497d9dd449668a7ff62ae3f07a98",
+          "target": "2d479be649bb4dfba15fcd85d7230403",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "127788f418094a098f98d4213d8aa7b4",
+          "edgeType": "Edge",
+          "source": "2d479be649bb4dfba15fcd85d7230403",
+          "target": "90e4295d701f4e38ba4cf7a3318debe6",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {
+    "ade742d9d32d4f709235ed62dec2a562": {
+      "id": "ade742d9d32d4f709235ed62dec2a562",
+      "name": "LiveAgent_application",
+      "value": {
+        "mode": "simple",
+        "value": ""
+      },
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "ec918b92398f4e91bac85f6e5e34d13d": {
+      "category": "vaInputs",
+      "id": "ec918b92398f4e91bac85f6e5e34d13d",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "bd29bbe9e2e14f28a5ae1f0aa014d6f2": {
+      "id": "bd29bbe9e2e14f28a5ae1f0aa014d6f2",
+      "value": {
+        "mode": "script",
+        "value": "(function execute() {\n    return gs.getProperty('glide.servlet.uri');\n})()"
+      },
+      "name": "baseUri",
+      "label": "baseUri",
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "a7ea8d00bd8348399ede9d0593fe285b": {
+      "id": "a7ea8d00bd8348399ede9d0593fe285b",
+      "value": {
+        "mode": "script",
+        "value": "(function execute() {\n    if (vaContext.deviceType == 'ios' || vaContext.deviceType == 'android')\n        return 'mesp';\n\n    return gs.getProperty('sn_itsm_va_lite.com.snc.itsm.virtualagent.portal_url','sp');\n})()"
+      },
+      "name": "portalName",
+      "label": "portalName",
+      "varType": "script",
+      "category": "vaVars"
+    },
+    "4601a765da7747728f972e8e916ea486": {
+      "id": "4601a765da7747728f972e8e916ea486",
+      "name": "record_id",
+      "label": "Record_id",
+      "defaultValue": "record_id",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    },
+    "9069d215964e47569d1eaa8159e00bb3": {
+      "id": "9069d215964e47569d1eaa8159e00bb3",
+      "name": "record_table",
+      "label": "Record_table",
+      "defaultValue": "record_table",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    },
+    "5d245cdc02684cebb0f28a4629bb5255": {
+      "id": "5d245cdc02684cebb0f28a4629bb5255",
+      "name": "variables",
+      "label": "Variables",
+      "defaultValue": "variables",
+      "varType": "string",
+      "category": "vaInputs",
+      "metadata": {
+        "libraryMappingType": "output"
+      },
+      "nodeId": "52a73bbde1bc4e1faa122fa7a02bb864",
+      "isHidden": false
+    }
+  }
+}</graph><key_phrases>Report IT Issue (testing),Report an Issue,report IT Issue, create,open,incident,ticket,issue,broken,help,IT</key_phrases><library>false</library><live_agent>false</live_agent><model_type>nlu_keyword</model_type><modify_confirmation_enabled>false</modify_confirmation_enabled><name>Report IT Issue (testing)</name><nlu_intent/><nlu_intent_label/><nlu_model/><nlu_model_label/><nlu_provider/><palette_label/><roles/><root_topic_id>35ca4c9d53330010fa75ddeeff7b12d1</root_topic_id><secure_custom_input_control>false</secure_custom_input_control><source_topic_id>35ca4c9d53330010fa75ddeeff7b12d1</source_topic_id><sys_class_name>sys_cb_topic</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-02 16:40:19</sys_created_on><sys_domain>global</sys_domain><sys_id>5c01452a83b2de10d704cfc0deaad37c</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Report IT Issue (testing)</sys_name><sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package><sys_policy/><sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope><sys_update_name>sys_cb_topic_5c01452a83b2de10d704cfc0deaad37c</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-02 16:40:31</sys_updated_on><title>Report IT Issue (testing)</title><triggerable_by_notification>false</triggerable_by_notification><type>STANDARD</type></sys_cb_topic><sys_translated_text action="delete_multiple" query="documentkey=5c01452a83b2de10d704cfc0deaad37c"/></record_update>]]></payload>
+        <payload_hash>139711038</payload_hash>
+        <record_name>Report IT Issue (testing)</record_name>
+        <reverted_from/>
+        <source>c556b5bf83aa5210d704cfc0deaad305</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:40:31</sys_created_on>
+        <sys_id>9f01896a83b2de10d704cfc0deaad39b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19427e3da960000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:40:31</sys_updated_on>
+        <type>Topic</type>
+        <update_guid>170105268ab2de102c4bddcc6bd3f1a9</update_guid>
+        <update_guid_history>170105268ab2de102c4bddcc6bd3f1a9:139711038,9401452a89b2de100182a33eafeff281:-455420944</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:55:37</sys_created_on>
+        <sys_db_object display_value="" name="sys_cb_topic">sys_cb_topic</sys_db_object>
+        <sys_id>1f501704563c4f078923a99b127c7c41</sys_id>
+        <sys_metadata>5c01452a83b2de10d704cfc0deaad37c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Report IT Issue (testing)</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_scope_delete display_value="">94872a8897db403e8ee69a431de2fca4</sys_scope_delete>
+        <sys_update_name>sys_cb_topic_5c01452a83b2de10d704cfc0deaad37c</sys_update_name>
+        <sys_update_version display_value="sys_cb_topic_5c01452a83b2de10d704cfc0deaad37c">9f01896a83b2de10d704cfc0deaad39b</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:55:37</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

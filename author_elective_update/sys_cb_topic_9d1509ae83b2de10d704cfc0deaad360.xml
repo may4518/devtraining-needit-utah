@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic">
+    <sys_cb_topic action="DELETE">
+        <applicability/>
+        <applicability_mode>query</applicability_mode>
+        <autopilot_topic>false</autopilot_topic>
+        <category/>
+        <channels/>
+        <connect_queue/>
+        <context_profiles/>
+        <description>The topic is used to collect the information and validate if user is not identified in the system. This is a template topic. The topic author has to clone this and modify this as per the channel requirements.</description>
+        <dialog_acts_enabled>false</dialog_acts_enabled>
+        <expose_on_palette>false</expose_on_palette>
+        <flexible_conversation_switching>false</flexible_conversation_switching>
+        <foundational>false</foundational>
+        <graph>{
+  "graph_api_version": "1.0.68",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "bd396e4ae803407c80edb43c2aaa47d7": {
+          "id": "bd396e4ae803407c80edb43c2aaa47d7",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "493a619df5084c3383ae611f9acb36d3": {
+          "id": "493a619df5084c3383ae611f9acb36d3",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "e779f54b5cae4ee7898ea0bb3ce0331d": {
+          "id": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "stepType": "TextPrompt",
+          "name": "User Id",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter your user id"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "17f65247c0044b219babd04bae61a732",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          },
+          "skipReprompt": {
+            "value": "",
+            "mode": "query"
+          },
+          "detailDescription": "",
+          "requestFeedback": true
+        },
+        "eb6916ffa6564b5a8085f97ab022e03b": {
+          "id": "eb6916ffa6564b5a8085f97ab022e03b",
+          "stepType": "TextPrompt",
+          "name": "OfficePhone",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter your office phone number"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "164b7498a12e4cc2ac67eb9c628eb3fb",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          },
+          "skipReprompt": {
+            "value": "",
+            "mode": "query"
+          },
+          "detailDescription": "",
+          "requestFeedback": true
+        },
+        "041390140a8644728e450ff9d5314615": {
+          "id": "041390140a8644728e450ff9d5314615",
+          "name": "Script Node",
+          "script": "(function execute() {\n    var gr = new GlideRecord(\"sys_user\");\n    gr.addQuery(\"user_name\", vaInputs.user_id);\n    gr.addQuery(\"phone\", vaInputs.officephone);\n    gr.query();\n    if(gr.next()) {\n        vaVars.global_linkaccount_verification_userid = gr.getValue(\"sys_id\");\n    } else {\n        vaVars.global_linkaccount_verification_userid = \"\";\n    }\n})()\n",
+          "stepType": "ScriptAction",
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "f930765f21f94248a2dc267cc300c251",
+          "edgeType": "Edge",
+          "source": "bd396e4ae803407c80edb43c2aaa47d7",
+          "target": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "f63e77f91fcb4310a3208f351f402460",
+          "edgeType": "Edge",
+          "source": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "target": "eb6916ffa6564b5a8085f97ab022e03b",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "2fb574a6e50b42a990e30757a9b75467",
+          "edgeType": "Edge",
+          "source": "eb6916ffa6564b5a8085f97ab022e03b",
+          "target": "041390140a8644728e450ff9d5314615",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "7930caa2211a433db58fd622df15554c",
+          "edgeType": "Edge",
+          "source": "041390140a8644728e450ff9d5314615",
+          "target": "493a619df5084c3383ae611f9acb36d3",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {
+    "69e717bf912349428fece58b4d03dbcf": {
+      "category": "vaInputs",
+      "id": "69e717bf912349428fece58b4d03dbcf",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "17f65247c0044b219babd04bae61a732": {
+      "id": "17f65247c0044b219babd04bae61a732",
+      "name": "user_id",
+      "label": "User Id",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2MjAzMTg3MjU1MyBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      },
+      "nodeId": "e779f54b5cae4ee7898ea0bb3ce0331d",
+      "isHidden": false
+    },
+    "164b7498a12e4cc2ac67eb9c628eb3fb": {
+      "id": "164b7498a12e4cc2ac67eb9c628eb3fb",
+      "name": "officephone",
+      "label": "OfficePhone",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2MjAzMTg5MDQyMiBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      },
+      "nodeId": "eb6916ffa6564b5a8085f97ab022e03b",
+      "isHidden": false
+    }
+  }
+}</graph>
+        <key_phrases>Account Link User Validation,Account Link User Validation(Template)</key_phrases>
+        <library>false</library>
+        <live_agent>false</live_agent>
+        <model_type>nlu_keyword</model_type>
+        <modify_confirmation_enabled>false</modify_confirmation_enabled>
+        <name>Account Link User Validation</name>
+        <nlu_intent/>
+        <nlu_intent_label/>
+        <nlu_model/>
+        <nlu_model_label/>
+        <nlu_provider/>
+        <palette_label/>
+        <roles>public</roles>
+        <root_topic_id>c76c35abeb2951102b57e5306952288d</root_topic_id>
+        <secure_custom_input_control>false</secure_custom_input_control>
+        <source_topic_id>c76c35abeb2951102b57e5306952288d</source_topic_id>
+        <sys_class_name>sys_cb_topic</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:58:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>9d1509ae83b2de10d704cfc0deaad360</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Account Link User Validation</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sys_cb_topic_9d1509ae83b2de10d704cfc0deaad360</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:58:11</sys_updated_on>
+        <title>Account Link User Validation</title>
+        <triggerable_by_notification>false</triggerable_by_notification>
+        <type>STANDARD</type>
+    </sys_cb_topic>
+    <sys_translated_text action="DELETE" query="documentkey=9d1509ae83b2de10d704cfc0deaad360"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</application>
+        <file_path/>
+        <instance_id>28458ef21b2eb99052a243f4bd4bcb0d</instance_id>
+        <instance_name>dev218542</instance_name>
+        <name>sys_cb_topic_9d1509ae83b2de10d704cfc0deaad360</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_cb_topic"><sys_cb_topic action="INSERT_OR_UPDATE"><applicability/><applicability_mode>query</applicability_mode><autopilot_topic>false</autopilot_topic><category/><channels/><connect_queue/><context_profiles/><description>The topic is used to collect the information and validate if user is not identified in the system. This is a template topic. The topic author has to clone this and modify this as per the channel requirements.</description><dialog_acts_enabled>false</dialog_acts_enabled><expose_on_palette>false</expose_on_palette><flexible_conversation_switching>false</flexible_conversation_switching><foundational>false</foundational><graph>{
+  "graph_api_version": "1.0.68",
+  "goals": {
+    "primary": {
+      "id": "primary",
+      "trigger": {
+        "type": "primary"
+      },
+      "name": "primary",
+      "applicability": "",
+      "description": "",
+      "nodes": {
+        "bd396e4ae803407c80edb43c2aaa47d7": {
+          "id": "bd396e4ae803407c80edb43c2aaa47d7",
+          "stepType": "Start",
+          "name": "Start",
+          "greetingResponse": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "493a619df5084c3383ae611f9acb36d3": {
+          "id": "493a619df5084c3383ae611f9acb36d3",
+          "stepType": "TerminateGoal",
+          "name": "End",
+          "confirmationMessage": {
+            "mode": "simple",
+            "value": ""
+          }
+        },
+        "e779f54b5cae4ee7898ea0bb3ce0331d": {
+          "id": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "stepType": "TextPrompt",
+          "name": "User Id",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter your user id"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "17f65247c0044b219babd04bae61a732",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          },
+          "skipReprompt": {
+            "value": "",
+            "mode": "query"
+          },
+          "detailDescription": "",
+          "requestFeedback": true
+        },
+        "eb6916ffa6564b5a8085f97ab022e03b": {
+          "id": "eb6916ffa6564b5a8085f97ab022e03b",
+          "stepType": "TextPrompt",
+          "name": "OfficePhone",
+          "prompt": {
+            "value": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "text": "Enter your office phone number"
+                  }
+                ]
+              }
+            ],
+            "mode": "simple"
+          },
+          "confirmMessage": {
+            "value": "",
+            "mode": "simple"
+          },
+          "acknowledgeMsg": {
+            "value": "",
+            "mode": "simple"
+          },
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          },
+          "skippable": {
+            "value": "",
+            "mode": "query"
+          },
+          "defaultValue": {
+            "value": "",
+            "mode": "simple"
+          },
+          "withNluUserInput": false,
+          "skipIfFulfilled": false,
+          "variableId": "164b7498a12e4cc2ac67eb9c628eb3fb",
+          "inputType": {
+            "format": "Text",
+            "script": ""
+          },
+          "skipReprompt": {
+            "value": "",
+            "mode": "query"
+          },
+          "detailDescription": "",
+          "requestFeedback": true
+        },
+        "041390140a8644728e450ff9d5314615": {
+          "id": "041390140a8644728e450ff9d5314615",
+          "name": "Script Node",
+          "script": "(function execute() {\n    var gr = new GlideRecord(\"sys_user\");\n    gr.addQuery(\"user_name\", vaInputs.user_id);\n    gr.addQuery(\"phone\", vaInputs.officephone);\n    gr.query();\n    if(gr.next()) {\n        vaVars.global_linkaccount_verification_userid = gr.getValue(\"sys_id\");\n    } else {\n        vaVars.global_linkaccount_verification_userid = \"\";\n    }\n})()\n",
+          "stepType": "ScriptAction",
+          "applicability": {
+            "value": "",
+            "mode": "query"
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "f930765f21f94248a2dc267cc300c251",
+          "edgeType": "Edge",
+          "source": "bd396e4ae803407c80edb43c2aaa47d7",
+          "target": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "f63e77f91fcb4310a3208f351f402460",
+          "edgeType": "Edge",
+          "source": "e779f54b5cae4ee7898ea0bb3ce0331d",
+          "target": "eb6916ffa6564b5a8085f97ab022e03b",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "2fb574a6e50b42a990e30757a9b75467",
+          "edgeType": "Edge",
+          "source": "eb6916ffa6564b5a8085f97ab022e03b",
+          "target": "041390140a8644728e450ff9d5314615",
+          "sourcePort": "",
+          "targetPort": ""
+        },
+        {
+          "id": "7930caa2211a433db58fd622df15554c",
+          "edgeType": "Edge",
+          "source": "041390140a8644728e450ff9d5314615",
+          "target": "493a619df5084c3383ae611f9acb36d3",
+          "sourcePort": "",
+          "targetPort": ""
+        }
+      ]
+    }
+  },
+  "variables": {
+    "69e717bf912349428fece58b4d03dbcf": {
+      "category": "vaInputs",
+      "id": "69e717bf912349428fece58b4d03dbcf",
+      "label": "User",
+      "name": "user",
+      "table": "sys_user",
+      "varType": "reference"
+    },
+    "17f65247c0044b219babd04bae61a732": {
+      "id": "17f65247c0044b219babd04bae61a732",
+      "name": "user_id",
+      "label": "User Id",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2MjAzMTg3MjU1MyBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      },
+      "nodeId": "e779f54b5cae4ee7898ea0bb3ce0331d",
+      "isHidden": false
+    },
+    "164b7498a12e4cc2ac67eb9c628eb3fb": {
+      "id": "164b7498a12e4cc2ac67eb9c628eb3fb",
+      "name": "officephone",
+      "label": "OfficePhone",
+      "varType": "string",
+      "secure": false,
+      "category": "vaInputs",
+      "encryptionHashFunction": "SHA-256",
+      "encryptionSalt": {
+        "value": "MTY2MjAzMTg5MDQyMiBWQSBEZXNpZ25lciBpcyBhd2Vzb21l",
+        "mode": "simple"
+      },
+      "nodeId": "eb6916ffa6564b5a8085f97ab022e03b",
+      "isHidden": false
+    }
+  }
+}</graph><key_phrases>Account Link User Validation,Account Link User Validation(Template)</key_phrases><library>false</library><live_agent>false</live_agent><model_type>nlu_keyword</model_type><modify_confirmation_enabled>false</modify_confirmation_enabled><name>Account Link User Validation</name><nlu_intent/><nlu_intent_label/><nlu_model/><nlu_model_label/><nlu_provider/><palette_label/><roles>public</roles><root_topic_id>c76c35abeb2951102b57e5306952288d</root_topic_id><secure_custom_input_control>false</secure_custom_input_control><source_topic_id>c76c35abeb2951102b57e5306952288d</source_topic_id><sys_class_name>sys_cb_topic</sys_class_name><sys_created_by>admin</sys_created_by><sys_created_on>2025-01-02 16:58:08</sys_created_on><sys_domain>global</sys_domain><sys_id>9d1509ae83b2de10d704cfc0deaad360</sys_id><sys_mod_count>1</sys_mod_count><sys_name>Account Link User Validation</sys_name><sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package><sys_policy/><sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope><sys_update_name>sys_cb_topic_9d1509ae83b2de10d704cfc0deaad360</sys_update_name><sys_updated_by>admin</sys_updated_by><sys_updated_on>2025-01-02 16:58:11</sys_updated_on><title>Account Link User Validation</title><triggerable_by_notification>false</triggerable_by_notification><type>STANDARD</type></sys_cb_topic><sys_translated_text action="delete_multiple" query="documentkey=9d1509ae83b2de10d704cfc0deaad360"/></record_update>]]></payload>
+        <payload_hash>-364568722</payload_hash>
+        <record_name>Account Link User Validation</record_name>
+        <reverted_from/>
+        <source>c556b5bf83aa5210d704cfc0deaad305</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:58:11</sys_created_on>
+        <sys_id>0615852283f2de10d704cfc0deaad304</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>19427f4070a0000001</sys_recorded_at>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:58:11</sys_updated_on>
+        <type>Topic</type>
+        <update_guid>ca158522a9f2de10d537ef00d7027903</update_guid>
+        <update_guid_history>ca158522a9f2de10d537ef00d7027903:-364568722,951509aed8b2de105ce15e02b0ab7e62:-303363624</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2025-01-02 16:59:55</sys_created_on>
+        <sys_db_object display_value="" name="sys_cb_topic">sys_cb_topic</sys_db_object>
+        <sys_id>36bc78cab8264ea0979aa9556e2c8400</sys_id>
+        <sys_metadata>9d1509ae83b2de10d704cfc0deaad360</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Account Link User Validation</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_scope_delete display_value="">94872a8897db403e8ee69a431de2fca4</sys_scope_delete>
+        <sys_update_name>sys_cb_topic_9d1509ae83b2de10d704cfc0deaad360</sys_update_name>
+        <sys_update_version display_value="sys_cb_topic_9d1509ae83b2de10d704cfc0deaad360">0615852283f2de10d704cfc0deaad304</sys_update_version>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-02 16:59:55</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
